@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.Title }}{% endblock %}
+
+{% block content %}
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    <a href="/" class="btn btn-secondary">Back to Search</a>
+{% else %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <img src="{{ movie.Poster }}" 
+                 class="card-img-top poster-detail" 
+                 alt="{{ movie.Title }} poster"
+                 onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+            <div class="card-body text-center">
+                <a href="https://www.imdb.com/title/{{ movie.imdbID }}" 
+                   target="_blank" 
+                   class="btn btn-primary btn-sm">
+                    <i class="bi bi-star-fill"></i> IMDb: {{ movie.imdbRating }}
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1>{{ movie.Title }} ({{ movie.Year }})</h1>
+                
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="badge bg-primary">{{ movie.Rated }}</span>
+                    <span class="badge bg-secondary">{{ movie.Runtime }}</span>
+                    {% for genre in movie.Genre.split(',') %}
+                    <span class="badge bg-info">{{ genre.strip() }}</span>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-4">
+                    <p><strong>Director:</strong> {{ movie.Director }}</p>
+                    <p><strong>Cast:</strong> {{ movie.Actors }}</p>
+                    <p><strong>Plot:</strong></p>
+                    <p class="lead">{{ movie.Plot }}</p>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    {% if movie.Language != 'N/A' %}
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-translate"></i> Language</h5>
+                                <p class="card-text">{{ movie.Language }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if movie.Country != 'N/A' %}
+                    <div class="col-sm-6">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-globe"></i> Country</h5>
+                                <p class="card-text">{{ movie.Country }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if movie.Awards != 'N/A' %}
+                    <div class="col-12">
+                        <div class="card bg-dark">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-award"></i> Awards</h5>
+                                <p class="card-text">{{ movie.Awards }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <a href="/" class="btn btn-secondary">
+                       <i class="bi bi-arrow-left"></i> Back to Search
+                    </a>
+                    <a href="https://www.imdb.com/title/{{ movie.imdbID }}" 
+                         target="_blank" 
+                           class="btn btn-outline-primary">
+                          View on IMDb <i class="bi bi-box-arrow-up-right"></i>
+                    
+
+                    {% if movie.Type|capitalize == "Game" %}
+                    <a href="https://store.steampowered.com/search/?term={{ movie.Title }}"
+                    target="_blank"
+                    class="btn btn-outline-primary">
+                    STEAM <img src="https://store.fastly.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016" width="54" height="22" alt="Lien vers la page d'accueil Steam"> <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                    {% else %}
+                    </a>
+                    <a href="https://www.netflix.com/search?q={{ movie.Title }}"
+                          target="_blank"
+                          class="btn btn-danger d-flex align-items-center gap-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" 
+                    alt="Netflix" 
+                    width="110" 
+                    height="44"
+                      style="filter: brightness(0) invert(1);">
+                    </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

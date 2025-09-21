@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-light">Search Results</h2>
+
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% elif movies %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for movie in movies %}
+        <div class="col">
+            <div class="card movie-card h-100 shadow-sm bg-dark text-light">
+                <a href="/movie/{{ movie.imdbID }}">
+                    <img src="{{ movie.Poster }}" 
+                         class="card-img-top" 
+                         alt="{{ movie.Title }} poster"
+                         onerror="this.src='https://via.placeholder.com/300x450?text=No+Poster'">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="/movie/{{ movie.imdbID }}" class="text-decoration-none text-light">
+                            {{ movie.Title }}
+                        </a>
+                    </h5>
+                    <p class="card-text text-muted">
+                        {{ movie.Year }} • {{ movie.Type|capitalize }}
+                    </p>
+                </div>
+                <div class="card-footer bg-secondary">
+                    <a href="/movie/{{ movie.imdbID }}" class="btn btn-sm btn-outline-light">
+                        View Details <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">No movies found.</div>
+{% endif %}
+
+<div class="mt-4">
+    <a href="/" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Search
+    </a>
+</div>
+{% endblock %}
